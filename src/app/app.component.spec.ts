@@ -1,27 +1,45 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, async , ComponentFixture} from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule }   from '@angular/forms';
+
+let comp: AppComponent;
+let fixture: ComponentFixture<AppComponent>;
+
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent
       ],
-    }).compileComponents();
+      imports: [BrowserModule,FormsModule]
+    }).compileComponents().then(()=> {
+      fixture = TestBed.createComponent(AppComponent);
+      comp    = fixture.componentInstance;
+      comp.num1 = 10;
+      comp.num2 = 2;
+    });
+    
   }));
-  it('should create the app', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
+  it('should add numbers', async(() => {
+    comp.operator = '+';
+    comp.calculate();
+    expect(comp.answer).toEqual(12);
   }));
-  it(`should have as title 'app'`, async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('app');
+  it('should multiple numbers', async(() => {
+    comp.operator = '*';
+    comp.calculate();
+    expect(comp.answer).toEqual(20);
   }));
-  it('should render title in a h1 tag', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to calculator!');
+  it('should divide numbers', async(() => {
+    comp.operator = '/';
+    comp.calculate();
+    expect(comp.answer).toEqual(5);
   }));
+  it('should subtract numbers', async(() => {
+    comp.operator = '-';
+    comp.calculate();
+    expect(comp.answer).toEqual(8);
+  }));
+
 });
